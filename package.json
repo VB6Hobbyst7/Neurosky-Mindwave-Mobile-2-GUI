@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.4",
+    "node-thinkgear-sockets": "^0.0.1",
     "socket.io": "^2.2.0"
   }
 }

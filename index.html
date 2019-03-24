@@ -6,11 +6,43 @@
   <script src="/socket.io/socket.io.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
   <body>
-    <div style="width: 50%;">
-      <canvas id="attention"></canvas>
+    <div>
+      <div style="width: 50%; float: left;">
+        <canvas id="attention"></canvas>
+      </div>
+      <div style="width: 50%; float: left;">
+        <canvas id="meditation"></canvas>
+      </div>
     </div>
-    <div style="width: 50%;">
-      <canvas id="meditation"></canvas>
+    <div>
+      <div style="width: 50%; float: left;">
+        <canvas id="delta"></canvas>
+      </div>
+      <div style="width: 50%; float: left;">
+        <canvas id="theta"></canvas>
+      </div>
+    </div>
+    <div>
+      <div style="width: 30%; float: left;">
+        <canvas id="lowAlpha"></canvas>
+      </div>
+      <div style="width: 30%; float: left;">
+        <canvas id="lowBeta"></canvas>
+      </div>
+      <div style="width: 30%; float: left;">
+        <canvas id="lowGamma"></canvas>
+      </div>
+    </div>
+    <div>
+      <div style="width: 30%; float: left;">
+        <canvas id="highAlpha"></canvas>
+      </div>
+      <div style="width: 30%; float: left;">
+        <canvas id="highBeta"></canvas>
+      </div>
+      <div style="width: 30%; float: left;">
+        <canvas id="highGamma"></canvas>
+      </div>
     </div>
   </body>
   <script>
@@ -22,51 +54,67 @@
       return zeroesArray;
     }
 
+
     const updateData = (newData, dataArray, dataChart) => {
       dataArray.splice(0, 1);
       dataArray.push(newData);
       dataChart.update(0);
     }
 
-    let attentionData = createZeroesArray(20);
-    let meditationData = createZeroesArray(20);
+
+    const attentionData = createZeroesArray(100);
+    const meditationData = createZeroesArray(100);
+
+
+    const deltaData = createZeroesArray(100);
+    const thetaData = createZeroesArray(100);
+    const lowAlphaData = createZeroesArray(100);
+    const highAlphaData = createZeroesArray(100);
+    const lowBetaData = createZeroesArray(100);
+    const highBetaData = createZeroesArray(100);
+    const lowGammaData = createZeroesArray(100);
+    const highGammaData = createZeroesArray(100);
 
 
     const socket = io();
     socket.on('data received', function(data){
       console.log(data);
 
-
       updateData(data.attention, attentionData, attentionChart);
       updateData(data.meditation, meditationData, meditationChart);
+
+      updateData(data.delta, deltaData, deltaChart);
+      updateData(data.theta, thetaData, thetaChart);
+      updateData(data.lowAlpha, lowAlphaData, lowAlphaChart);
+      updateData(data.highAlpha, highAlphaData, highAlphaChart);
+      updateData(data.lowBeta, lowBetaData, lowBetaChart);
+      updateData(data.highBeta, highBetaData, highBetaChart);
+      updateData(data.lowGamma, lowGammaData, lowGammaChart);
+      updateData(data.highGamma, highGammaData, highGammaChart);
     });
 
 
-
-
-
-
-
-    let attentionChart = new Chart(document.getElementById('attention').getContext('2d'), {
+    const attentionChart = new Chart(document.getElementById('attention').getContext('2d'), {
       type: 'line',
       data: {
           labels: attentionData,
           datasets: [{
               label: 'Attention',
-              borderColor: 'rgb(255, 99, 132)',
+              borderColor: 'rgb(255, 100, 100)',
               data: attentionData,
           }]
       },
       options: {}
     });
 
-    let meditationChart = new Chart(document.getElementById('meditation').getContext('2d'), {
+
+    const meditationChart = new Chart(document.getElementById('meditation').getContext('2d'), {
       type: 'line',
       data: {
           labels: meditationData,
           datasets: [{
               label: 'Meditation',
-              borderColor: 'rgb(49, 99, 255)',
+              borderColor: 'rgb(100, 100, 255)',
               data: meditationData,
           }]
       },
@@ -74,5 +122,115 @@
     });
 
 
+    const deltaChart = new Chart(document.getElementById('delta').getContext('2d'), {
+      type: 'line',
+      data: {
+          labels: deltaData,
+          datasets: [{
+              label: 'Delta',
+              borderColor: 'rgb(100, 100, 100)',
+              data: deltaData,
+          }]
+      },
+      options: {}
+    });
+
+
+    const thetaChart = new Chart(document.getElementById('theta').getContext('2d'), {
+      type: 'line',
+      data: {
+          labels: thetaData,
+          datasets: [{
+              label: 'Theta',
+              borderColor: 'rgb(100, 100, 100)',
+              data: thetaData,
+          }]
+      },
+      options: {}
+    });
+
+
+    const lowAlphaChart = new Chart(document.getElementById('lowAlpha').getContext('2d'), {
+      type: 'line',
+      data: {
+          labels: lowAlphaData,
+          datasets: [{
+              label: 'Low Alpha',
+              borderColor: 'rgb(100, 100, 100)',
+              data: lowAlphaData,
+          }]
+      },
+      options: {}
+    });
+
+
+    const highAlphaChart = new Chart(document.getElementById('highAlpha').getContext('2d'), {
+      type: 'line',
+      data: {
+          labels: highAlphaData,
+          datasets: [{
+              label: 'High Alpha',
+              borderColor: 'rgb(100, 100, 100)',
+              data: highAlphaData,
+          }]
+      },
+      options: {}
+    });
+
+
+    const lowBetaChart = new Chart(document.getElementById('lowBeta').getContext('2d'), {
+      type: 'line',
+      data: {
+          labels: lowBetaData,
+          datasets: [{
+              label: 'Low Beta',
+              borderColor: 'rgb(100, 100, 100)',
+              data: lowBetaData,
+          }]
+      },
+      options: {}
+    });
+
+
+    const highBetaChart = new Chart(document.getElementById('highBeta').getContext('2d'), {
+      type: 'line',
+      data: {
+          labels: highBetaData,
+          datasets: [{
+              label: 'High Beta',
+              borderColor: 'rgb(100, 100, 100)',
+              data: highBetaData,
+          }]
+      },
+      options: {}
+    });
+
+
+    const lowGammaChart = new Chart(document.getElementById('lowGamma').getContext('2d'), {
+      type: 'line',
+      data: {
+          labels: lowGammaData,
+          datasets: [{
+              label: 'Low Gamma',
+              borderColor: 'rgb(100, 100, 100)',
+              data: lowGammaData,
+          }]
+      },
+      options: {}
+    });
+
+
+    const highGammaChart = new Chart(document.getElementById('highGamma').getContext('2d'), {
+      type: 'line',
+      data: {
+          labels: highGammaData,
+          datasets: [{
+              label: 'High Gamma',
+              borderColor: 'rgb(100, 100, 100)',
+              data: highGammaData,
+          }]
+      },
+      options: {}
+    });
   </script>
 </html>

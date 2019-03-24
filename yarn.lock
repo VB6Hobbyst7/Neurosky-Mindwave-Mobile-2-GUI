@@ -311,6 +311,10 @@ negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
 
+node-thinkgear-sockets@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/node-thinkgear-sockets/-/node-thinkgear-sockets-0.0.1.tgz#227db78cec2b9e459cba2ec78baf8f7866746214"
+
 object-component@0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/object-component/-/object-component-0.0.3.tgz#f0c69aa50efc95b866c186f400a33769cb2f1291"
