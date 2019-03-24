@@ -2,7 +2,7 @@ const app = require('express')();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const thinkgear = require('node-thinkgear-sockets');
-const client = thinkgear.createClient({ enableRawOutput: false });
+const client = thinkgear.createClient({ enableRawOutput: true });
 
 
 app.get('/', function(req, res){
@@ -11,8 +11,7 @@ app.get('/', function(req, res){
 
 
 client.on('data',function(data){
-  console.log(data);
-
+  console.log('received data');
   io.emit('data received', {
     attention: data.eSense.attention,
     meditation: data.eSense.meditation,
@@ -25,6 +24,13 @@ client.on('data',function(data){
     lowGamma: data.eegPower.lowGamma,
     highGamma: data.eegPower.highGamma,
  });
+});
+
+
+client.on('raw_data',function(data){
+  io.emit('raw_data received', {
+    eeg: data.rawEeg,
+  });
 });
 
 

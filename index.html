@@ -44,6 +44,9 @@
         <canvas id="highGamma"></canvas>
       </div>
     </div>
+    <div style="width: 100%; float: left;">
+      <canvas id="eeg"></canvas>
+    </div>
   </body>
   <script>
     const createZeroesArray = (length) => {
@@ -76,13 +79,13 @@
     const highGammaData = createZeroesArray(100);
 
 
+    const eegData = createZeroesArray(1000);
+
+
     const socket = io();
     socket.on('data received', function(data){
-      console.log(data);
-
       updateData(data.attention, attentionData, attentionChart);
       updateData(data.meditation, meditationData, meditationChart);
-
       updateData(data.delta, deltaData, deltaChart);
       updateData(data.theta, thetaData, thetaChart);
       updateData(data.lowAlpha, lowAlphaData, lowAlphaChart);
@@ -91,6 +94,11 @@
       updateData(data.highBeta, highBetaData, highBetaChart);
       updateData(data.lowGamma, lowGammaData, lowGammaChart);
       updateData(data.highGamma, highGammaData, highGammaChart);
+    });
+
+
+    socket.on('raw_data received', function(data){
+      updateData(data.eeg, eegData, eegChart);
     });
 
 
@@ -228,6 +236,20 @@
               label: 'High Gamma',
               borderColor: 'rgb(100, 100, 100)',
               data: highGammaData,
+          }]
+      },
+      options: {}
+    });
+
+
+    const eegChart = new Chart(document.getElementById('eeg').getContext('2d'), {
+      type: 'line',
+      data: {
+          labels: eegData,
+          datasets: [{
+              label: 'EEG',
+              borderColor: 'rgb(100, 100, 100)',
+              data: eegData,
           }]
       },
       options: {}
