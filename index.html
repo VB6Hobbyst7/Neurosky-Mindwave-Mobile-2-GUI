@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Mindwave GUI</title>
+  </head>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+  <body>
+    <div style="width: 50%;">
+      <canvas id="attention"></canvas>
+    </div>
+    <div style="width: 50%;">
+      <canvas id="meditation"></canvas>
+    </div>
+  </body>
+  <script>
+    const createZeroesArray = (length) => {
+      const zeroesArray = [];
+      for (let x = 0; x < length; x += 1) {
+        zeroesArray.push(0);
+      };
+      return zeroesArray;
+    }
+
+
+
+
+    const socket = io();
+    socket.on('data received', function(data){
+      attentionData = updateAttentionData(data.attention);
+      meditationData = updateMeditationData(data.meditation);
+    });
+
+
+
+
+    let attentionData = createZeroesArray(20);
+    let meditationData = createZeroesArray(20);
+
+
+    const updateAttentionData = (newData) => {
+      const newAttentionData = [...attentionData];
+      newAttentionData.splice(0, 1);
+      newAttentionData.push(newData);
+
+      chartAttention.data.labels = [...newAttentionData];
+      chartAttention.data.datasets[0].data = [...newAttentionData];
+      chartAttention.update(0);
+
+      return newAttentionData;
+    };
+
+
+    const updateMeditationData = (newData) => {
+      const newMeditationData = [...meditationData];
+      newMeditationData.splice(0, 1);
+      newMeditationData.push(newData);
+
+      chartMedidation.data.labels = [...newMeditationData];
+      chartMedidation.data.datasets[0].data = [...newMeditationData];
+      chartMedidation.update(0);
+
+      return newMeditationData;
+    };
+
+
+    let chartAttention = new Chart(document.getElementById('attention').getContext('2d'), {
+      type: 'line',
+      data: {
+          labels: attentionData,
+          datasets: [{
+              label: 'Attention',
+              borderColor: 'rgb(255, 99, 132)',
+              data: attentionData,
+          }]
+      },
+      options: {}
+    });
+
+    let chartMedidation = new Chart(document.getElementById('meditation').getContext('2d'), {
+      type: 'line',
+      data: {
+          labels: meditationData,
+          datasets: [{
+              label: 'Data 1 dataset',
+              borderColor: 'rgb(255, 99, 132)',
+              data: meditationData,
+          }]
+      },
+      options: {}
+    });
+
+
+  </script>
+</html>
