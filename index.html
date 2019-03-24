@@ -22,49 +22,32 @@
       return zeroesArray;
     }
 
-
-
-
-    const socket = io();
-    socket.on('data received', function(data){
-      attentionData = updateAttentionData(data.attention);
-      meditationData = updateMeditationData(data.meditation);
-    });
-
-
-
+    const updateData = (newData, dataArray, dataChart) => {
+      dataArray.splice(0, 1);
+      dataArray.push(newData);
+      dataChart.update(0);
+    }
 
     let attentionData = createZeroesArray(20);
     let meditationData = createZeroesArray(20);
 
 
-    const updateAttentionData = (newData) => {
-      const newAttentionData = [...attentionData];
-      newAttentionData.splice(0, 1);
-      newAttentionData.push(newData);
-
-      chartAttention.data.labels = [...newAttentionData];
-      chartAttention.data.datasets[0].data = [...newAttentionData];
-      chartAttention.update(0);
-
-      return newAttentionData;
-    };
+    const socket = io();
+    socket.on('data received', function(data){
+      console.log(data);
 
 
-    const updateMeditationData = (newData) => {
-      const newMeditationData = [...meditationData];
-      newMeditationData.splice(0, 1);
-      newMeditationData.push(newData);
-
-      chartMedidation.data.labels = [...newMeditationData];
-      chartMedidation.data.datasets[0].data = [...newMeditationData];
-      chartMedidation.update(0);
-
-      return newMeditationData;
-    };
+      updateData(data.attention, attentionData, attentionChart);
+      updateData(data.meditation, meditationData, meditationChart);
+    });
 
 
-    let chartAttention = new Chart(document.getElementById('attention').getContext('2d'), {
+
+
+
+
+
+    let attentionChart = new Chart(document.getElementById('attention').getContext('2d'), {
       type: 'line',
       data: {
           labels: attentionData,
@@ -77,13 +60,13 @@
       options: {}
     });
 
-    let chartMedidation = new Chart(document.getElementById('meditation').getContext('2d'), {
+    let meditationChart = new Chart(document.getElementById('meditation').getContext('2d'), {
       type: 'line',
       data: {
           labels: meditationData,
           datasets: [{
-              label: 'Data 1 dataset',
-              borderColor: 'rgb(255, 99, 132)',
+              label: 'Meditation',
+              borderColor: 'rgb(49, 99, 255)',
               data: meditationData,
           }]
       },
